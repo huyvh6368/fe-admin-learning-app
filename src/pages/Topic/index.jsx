@@ -3,22 +3,28 @@ import { useNavigate } from "react-router-dom";
 import topicService from "../../api/TopicService";
 import levelService from "../../api/LevelService"; // <== Thêm dòng này
 import { Link } from "react-router-dom";
-
+import React from "react";
 function Topic() {
     const [topics, setTopics] = useState([]);
     const [levels, setLevels] = useState([]); // <== Thêm state levels
     const [modal, setModal] = useState(false);
     const [idUpdate, setIdUpdate] = useState(0);
     const [topic, setTopic] = useState({});
-
     const navigate = useNavigate();
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+    const pageSize = 5;
 
-    const fetchDatas = async () => {
+    const fecthDatas = async (pageNumber = 0) => {
         try {
-            const response = await topicService.getAll(0, 10);
-            if (response.code === 200) setTopics(response.data);
+            const response = await topicService.getAll(pageNumber, pageSize);
+            if (response.code === 200) {
+                setTopics(response.data);
+                setPage(response.currentPage);
+                setTotalPages(response.totalPages);
+            }
         } catch (e) {
-            console.log("Lỗi fetch topic: ", e);
+            console.log("lỗi : ", e);
         }
     };
 
@@ -50,7 +56,7 @@ function Topic() {
             if (res.code === 200) {
                 alert(res.message);
                 setModal(false);
-                fetchDatas();
+                fecthDatas(page)
             }
         } catch (e) {
             console.log("Lỗi update: ", e);
@@ -62,8 +68,17 @@ function Topic() {
         navigate(`/question/${id}`)
     }
     useEffect(() => {
-        fetchDatas();
-    }, []);
+        fecthDatas(page);
+    }, [page]);
+    // 1. Group topics theo levelName
+    const groupedTopics = topics.reduce((acc, topic) => {
+        if (!acc[topic.levelName]) {
+            acc[topic.levelName] = [];
+        }
+        acc[topic.levelName].push(topic);
+        return acc;
+    }, {});
+    console.log("topics : ", topics);
 
     return (
         <>
@@ -178,7 +193,7 @@ function Topic() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                                {topics.map(item => (
+                                {/* {topics.map(item => (
                                     <tr className="hover:bg-gray-50 transition duration-200" key={item.id}>
                                         <td className="px-5 py-4 text-sm text-gray-800">{item.id}</td>
                                         <td className="px-5 py-4 text-sm text-gray-800">{item.name}</td>
@@ -196,18 +211,86 @@ function Topic() {
                                                 onClick={() => handlerShowQuestion(item.id)}
                                                 className="flex items-center gap-2 px-4 py-1 bg-orange-500 text-white rounded-xl shadow hover:bg-orange-600 transition duration-200"
                                             >
-                                                <i className="fa-solid fa-eye"></i>
-                                                <span>view</span>
+                                                <i className="fa-solid fa-list"></i>
+                                                <span>List Questions</span>
                                             </button>
                                         </td>
                                     </tr>
-                                ))}
+                                ))} */}
+                                {Object.entries(groupedTopics).map(([levelName, topicsByLevel]) => {
+                                    // 🎨 Random màu nền cho từng group level
+                                    const bgColors = ["bg-pink-400", "bg-yellow-300", "bg-green-300", "bg-blue-300", "bg-purple-300"];
+                                    const randomBg = bgColors[Math.floor(Math.random() * bgColors.length)];
+
+                                    return (
+                                        <React.Fragment key={levelName}>
+                                            <tr className={randomBg}>
+                                                <td colSpan="5" className="px-5 py-1 text-lg font-semibold text-center text-gray-700 uppercase">
+                                                    {levelName}
+                                                </td>
+                                            </tr>
+
+                                            {topicsByLevel.map(item => (
+                                                <tr className="hover:bg-gray-50 transition duration-200" key={item.id}>
+                                                    <td className="px-5 py-4 text-sm text-gray-800">{item.id}</td>
+                                                    <td className="px-5 py-4 text-sm text-gray-800">{item.name}</td>
+                                                    <td className="px-5 py-4 text-sm text-gray-800">{item.describes}</td>
+                                                    <td className="px-5 py-4 text-sm text-gray-800">{item.levelName}</td>
+                                                    <td className="px-5 py-4 text-sm flex justify-around items-center">
+                                                        <button
+                                                            onClick={() => handlerShowForm(item.id, item.name, item.describes, item.levelId)}
+                                                            className="flex items-center gap-2 px-4 py-1 bg-blue-500 text-white rounded-xl shadow hover:bg-blue-600 transition duration-200"
+                                                        >
+                                                            <i className="fas fa-pen"></i>
+                                                            <span>Sửa</span>
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handlerShowQuestion(item.id)}
+                                                            className="flex items-center gap-2 px-4 py-1 bg-orange-500 text-white rounded-xl shadow hover:bg-orange-600 transition duration-200"
+                                                        >
+                                                            <i className="fa-solid fa-list"></i>
+                                                            <span>List Questions</span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </React.Fragment>
+                                    );
+                                })}
                             </tbody>
                         </table>
-                        <link
-                            rel="stylesheet"
-                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-                        />
+                    </div>
+                    <div className="flex justify-center mt-6">
+                        <nav className="inline-flex items-center space-x-1 rounded-xl bg-white p-2 shadow-xxl">
+                            <button
+                                onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+                                disabled={page === 0}
+                                className={`px-3 py-2 text-sm font-medium rounded-lg transition ${page === 0 ? "text-gray-300 cursor-not-allowed" : "text-gray-500 hover:text-white hover:bg-blue-500"
+                                    }`}
+                            >
+                                <i className="fas fa-angle-left"></i>
+                            </button>
+
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setPage(index)}
+                                    className={`px-3 py-2 text-sm font-medium rounded-lg transition ${page === index ? "bg-blue-500 text-white shadow" : "text-gray-500 hover:text-white hover:bg-blue-500"
+                                        }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+
+                            <button
+                                onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))}
+                                disabled={page === totalPages - 1}
+                                className={`px-3 py-2 text-sm font-medium rounded-lg transition ${page === totalPages - 1 ? "text-gray-300 cursor-not-allowed" : "text-gray-500 hover:text-white hover:bg-blue-500"
+                                    }`}
+                            >
+                                <i className="fas fa-angle-right"></i>
+                            </button>
+                        </nav>
                     </div>
                 </div>
             )}

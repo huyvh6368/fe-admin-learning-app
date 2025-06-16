@@ -18,11 +18,16 @@ function HeaderApp() {
 
 
     return (
-        <header className="w-full h-16 flex flex-row justify-between items-center border-b-4 border-b-black shadow-lg p-4 bg-white rounded-md">
-            <section className="w-1/5  flex flex-row justify-center items-center">
-                <span className="font-bold text-3xl"><i className="fa-brands fa-apple"></i></span>
+        <header className="w-full h-16 flex flex-row justify-between items-center border-b-4 border-b-black shadow-lg  rounded-md">
+            <section className="w-1/6  flex flex-row justify-center items-center ">
+                <span className="font-bold text-3xl ">
+                    <i className="fa-brands fa-angellist"></i>
+                </span>
             </section>
-            <section className="w-4/5 flex flex-row justify-end items-center">
+            <section className="w-4/6  flex flex-row justify-center items-center text-red-500">
+                <h1 className="font-semibold">Chào mừng bạn đến với website learning app</h1>
+            </section>
+            <section className="w-1/6 flex flex-row justify-end items-center ">
                 <div className=" mr-10 px-2 py-2 rounded-2xl font-sans flex flex-row justify-between items-center w-96">
                     <span>
                         {/* <i className="fa-solid fa-user"></i> {userLogin.email} */}

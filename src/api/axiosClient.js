@@ -26,8 +26,13 @@ axiosClient.interceptors.response.use(
     (error) => {
         // Xử lý lỗi tập trung
         if (error.response && error.response.status === 401) {
-            // redirect hoặc xử lý khi hết hạn token
             console.error("Không có quyền truy cập");
+
+            // ✅ Xóa token cũ nếu cần
+            localStorage.removeItem("accessToken");
+
+            // ✅ Điều hướng về trang login
+            window.location.href = "/login"; // hoặc "/login?expired=true"
         }
         return Promise.reject(error);
     }

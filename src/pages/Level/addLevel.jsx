@@ -1,37 +1,46 @@
 import { useState } from "react";
 import levelService from "../../api/LevelService";
 import { useNavigate } from "react-router-dom";
+import { FullScreenLoader } from "../../component/AnimationLoad"
+// Loader toàn màn hình
+
+
 function AddLevel() {
     const [level, setLevel] = useState({});
+    const [isLoad, setIsLoad] = useState(false);
     const navigate = useNavigate();
+
     const handlerInput = (e) => {
         const { name, value } = e.target;
-        setLevel({ ...level, [name]: value })
-        console.log("level : ", level);
-    }
+        setLevel({ ...level, [name]: value });
+    };
+
     const handlerSubmit = async (e) => {
         e.preventDefault();
-        console.log(" submit");
         try {
+            setIsLoad(true);
             const res = await levelService.add(level);
             if (res.code === 200) {
-                alert(res.message)
+                alert(res.message);
                 navigate("/level");
             }
             console.log("res : ", res);
         } catch (e) {
             console.log(e);
         }
-    }
+        setIsLoad(false);
+    };
+
     const handlerBack = () => {
         navigate("/level");
-    }
+    };
+
     return (
-        <div className="w-full h-full p-6">
+        <div className="w-full h-full p-6 relative">
+            {isLoad && <FullScreenLoader />}
             <div className="flex justify-center items-center pt-5 pb-8">
                 <h1 className="font-bold text-2xl text-gray-800">Thêm mới level</h1>
             </div>
-
             <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden p-6">
                 <form className="space-y-6">
                     <div>
