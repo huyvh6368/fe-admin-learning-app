@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import levelService from "../../api/LevelService";
-import topicService from "../../api/TopicService"; // 👈 Thêm service thêm topic
+import levelService from "../../api/levelService";
+import topicService from "../../api/topicService";
 import { useNavigate } from "react-router-dom";
 import { FullScreenLoader } from "../../component/AnimationLoad"
 function AddTopic() {

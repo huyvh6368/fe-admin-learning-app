@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from '../../api/AuthService'
+import authService from '../../api/authService';
 import { toast } from "react-toastify";
 
 function LoginPage() {
@@ -20,7 +20,7 @@ function LoginPage() {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await AuthService.login(user);
+            const response = await authService.login(user);
             console.log("response : ", response);
 
             // Lưu token vào localStorage

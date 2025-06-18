@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import answerService from '../../api/AnswerService';
+import answerService from '../../api/answerService';
 import AddAnswer from './AddAnswer'
-import questionService from '../../api/QuestionService';
+import questionService from '../../api/questionService';
 
 function Answer() {
     const [modal, setModal] = useState(false);

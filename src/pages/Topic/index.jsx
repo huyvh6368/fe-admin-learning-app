@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import topicService from "../../api/TopicService";
-import levelService from "../../api/LevelService"; // <== Thêm dòng này
+import topicService from "../../api/topicService";
+import levelService from "../../api/levelService"; // <== Thêm dòng này
 import { Link } from "react-router-dom";
 import React from "react";
 function Topic() {

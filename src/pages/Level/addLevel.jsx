@@ -1,5 +1,5 @@
 import { useState } from "react";
-import levelService from "../../api/LevelService";
+import levelService from "../../api/levelService";
 import { useNavigate } from "react-router-dom";
 import { FullScreenLoader } from "../../component/AnimationLoad"
 // Loader toàn màn hình

@@ -6,7 +6,7 @@ function MenuApp() {
         { name: "DashBoard", path: "/" },
         { name: "Level", path: "/level" },
         { name: "Topic", path: "/topic" },
-        { name: "Learner", path: "/learner" }
+        { name: "Rank", path: "/rank" }
     ]
     const [isActive, setIsActive] = useState('DashBoard')
     const handlerActive = (e) => {

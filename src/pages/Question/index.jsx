@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { uploadFile } from "../../api/UploadFile";
-import QuestionService from '../../api/QuestionService';
+import { uploadFile } from "../../api/uploadFile";
+import QuestionService from '../../api/questionService';
 function Question() {
     const [modal, setModal] = useState(false)
     const [questions, setQuestions] = useState([]);

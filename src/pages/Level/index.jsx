@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import levelService from "../../api/LevelService";
+import levelService from "../../api/levelService";
 
 function Level() {
     const [levels, setLevels] = useState([]);

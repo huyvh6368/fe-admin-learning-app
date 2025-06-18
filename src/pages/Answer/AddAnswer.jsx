@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import answerService from '../../api/AnswerService';
+import answerService from '../../api/answerService';
 import { FullScreenLoader } from "../../component/AnimationLoad"
 function AddAnswer({ question }) {
     const navigate = useNavigate();

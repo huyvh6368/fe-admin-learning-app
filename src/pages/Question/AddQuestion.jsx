@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
-import { uploadFile } from "../../api/UploadFile";
-import questionService from "../../api/QuestionService"
+import { uploadFile } from "../../api/uploadFile";
+import questionService from "../../api/questionService"
 import AddAnswer from "../Answer/AddAnswer";
 import { FullScreenLoader } from "../../component/AnimationLoad"
 function AddQuestion() {
