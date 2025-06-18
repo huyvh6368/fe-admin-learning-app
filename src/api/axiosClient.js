@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-    baseURL: "http://localhost:8080/api", // đổi thành URL thật
+    baseURL: process.env.REACT_APP_API_BASE_URL, // đổi thành URL thật
+    // baseURL: "http://localhost:8080/api",
     headers: {
         "Content-Type": "application/json",
     },

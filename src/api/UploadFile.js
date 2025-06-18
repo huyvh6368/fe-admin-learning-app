@@ -10,7 +10,9 @@ export const uploadFile = async (file) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await axios.post('http://localhost:8080/api/images/upload', formData, {
+        // const baseURL = "http://localhost:8080/api";
+        const baseURL = process.env.REACT_APP_API_BASE_URL;
+        const response = await axios.post(`${baseURL}/images/upload`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
